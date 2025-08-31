@@ -5,7 +5,7 @@ const PORT = 5000;
 
 require('dotenv').config();
 
-const MONGO_URI = "mongodb+srv://amashtce:Amash2005@e-commerce.djijap2.mongodb.net/?retryWrites=true&w=majority&appName=E-Commerce";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
 const conn = mongoose.connection;
