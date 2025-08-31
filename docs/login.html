@@ -1,8 +1,8 @@
 <nav>
-    <div class="logo"><a href="/index.html">🛒 Mini Store</a></div>
+    <div class="logo"><a href="./index.html">🛒 Mini Store</a></div>
     <div>
-        <a href="index.html">Home</a>
-        <a href="register.html">Sign Up</a>
+        <a href="./index.html">Home</a>
+        <a href="./register.html">Sign Up</a>
         <a href="#">Cart</a>
     </div>
   </nav>
@@ -132,7 +132,7 @@
             alert('Login Successfull!!');
             localStorage.setItem('token',true);
             localStorage.setItem('name',data.msg);
-            window.location.href = 'index.html';
+            window.location.href = './index.html';
         }
         else window.alert('Login Failed');
     }
