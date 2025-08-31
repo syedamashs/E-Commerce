@@ -8,7 +8,7 @@ This project demonstrates user registration, login, dynamic navbar, and a basic 
 
 ## 📸 Preview
 
-![Mini Store Preview](https://images.unsplash.com/photo-1503602642458-232111445657?w=800)  
+![Mini Store Preview](preview.PNG)  
 
 ---
 
@@ -41,3 +41,60 @@ This project demonstrates user registration, login, dynamic navbar, and a basic 
 
 ## 🗂️ Folder Structure
 
+Mini-Ecommerce-Store/
+│
+├─ template/
+│ ├─ register.html
+│ ├─ login.html
+│ └─ index.html
+│
+├─ server.js
+└─ README.md
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js installed  
+- MySQL installed and running  
+
+### Database Setup
+
+1. Create a database:
+```sql
+CREATE DATABASE registerdb;
+USE registerdb;
+```
+
+2. Create the users table:
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+```
+
+Install Dependencies
+-npm install express cors mysql2
+
+Run the Server
+-node server.js
+
+### Open the App
+
+-Serve your HTML files using Live Server in VSCode or any static server.
+-Open index.html in your browser.
+-Use /template/register.html to register a new user.
+-Use /template/login.html to login.
+
+📝 Notes
+
+-The cart and profile pages are not fully functional in this demo.
+-LocalStorage is used to simulate login sessions.
+
+
+This project is open source and free to use.
