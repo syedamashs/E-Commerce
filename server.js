@@ -1,80 +1,58 @@
 const express = require('express');
 const cors = require('cors');   
-const mysql = require('mysql2');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
+const MONGO_URI = process.env.MONGO_URI;
 
-const db = mysql.createConnection({
-    host:'localhost',
-    user: 'root',
-    password: 'Amash@2005',
-    database: 'registerdb',
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 });
 
-db.connect((err)=>{
-    if(err){
-        console.log("DB CONNECTION ERROR",err);
-        return;
-    }
-    console.log("DB CONNECTED SUCCESSFULLY");
-})
+const User = mongoose.model("User", userSchema);
 
 app.use(cors());
 app.use(express.json());
 
-app.post('/api/register', (req,res)=>{
+// REGISTER
+app.post('/api/register', async (req,res)=>{
     const {name,password} = req.body;
-    const QUERY = "Insert into users (name,password) values(?,?)";
-    const QUERY2 = "Select * from users where name=?";
+    if(!name || !password) return res.json({status:false, msg:"Invalid credentials"});
 
-    db.query(QUERY2, [name], (err,result)=>{
-        if(err){
-            console.log("DB error",err);
-            return;
-        }
+    try {
+        const exists = await User.findOne({name});
+        if(exists) return res.json({status:"more", msg:"Username already exists"});
 
-        if(result.length>0){
-            return res.json({status: "more", msg: "Username already Exists"});
-        }
-        else{
-            if(name && password){
-                db.query(QUERY, [name,password], (err,result)=>{
-                if(err){
-                    console.log("DB INSERTION ERROR",err);
-                    return;}
-                return res.json({status:true, msg: "USER registered successfully"});
-            })
-        }
-             else{
-            return res.json({status: false , msg: "Invalid credentials"})
-        }
-        }
-    })
-
-    
+        const newUser = new User({name,password});
+        await newUser.save();
+        res.json({status:true, msg:"USER registered successfully"});
+    } catch(err) {
+        console.log("DB Error:", err);
+        res.json({status:false, msg:"DB error"});
+    }
 });
 
-app.post("/api/login",(req,res)=>{
+// LOGIN
+app.post('/api/login', async (req,res)=>{
     const {name,password} = req.body;
-    const QUERY = "Select * from users where name=? and password=?";
+    if(!name || !password) return res.json({status:false, msg:"Invalid credentials"});
 
-    if(name && password){
-        db.query(QUERY, [name,password], (err,result)=>{
-            if(err){
-                console.log("DB Login Error",err);
-                return;
-            }
-
-            if(result.length>0){
-                return res.json({status: true, msg: name});
-            }
-            else{
-                return res.json({status: false, msg: "Invalid Credentials"});
-            }
-        })
+    try {
+        const user = await User.findOne({name,password});
+        if(user) return res.json({status:true, msg:name});
+        res.json({status:false, msg:"Invalid Credentials"});
+    } catch(err) {
+        console.log("DB Error:", err);
+        res.json({status:false, msg:"DB error"});
     }
-})
+});
 
-app.listen(5000, ()=>{
-    console.log("Server started on port 5000");
-})
+// CONNECT DB & START SERVER
+mongoose.connect(MONGO_URI)
+  .then(() => {
+      console.log("DB CONNECTED SUCCESSFULLY");
+      app.listen(5000, () => console.log("Server started on port 5000"));
+  })
+  .catch(err => console.log("DB CONNECTION ERROR", err));
