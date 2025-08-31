@@ -1,0 +1,139 @@
+<nav>
+    <div class="logo"><a href="index.html">🛒 Mini Store</a></div>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="register.html">Sign Up</a>
+        <a href="#">Cart</a>
+    </div>
+  </nav>
+
+<style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f9f9f9; }
+    nav{
+            display: flex;
+            background: #333;
+            padding: 1rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+    .logo a{
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+         nav a {
+            font-size: 1rem;
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #ff9800;
+        }  
+
+    .loginf {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-top: 70px;
+        padding: 50px 20px;
+        border: 2px solid #ff9800;
+        width: 300px;
+        height: 350px;
+        align-items: center;
+    }
+
+    .loginf h1 {
+        margin: 10px 0;
+        color: #ff9800;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+        padding: 5px;
+        width: 100%;
+        text-shadow: 1px 1px 2px #ccc;
+        font-family: 'Arial', sans-serif;
+        letter-spacing: 2px;
+        box-sizing: border-box;
+        margin-top: -20px;
+        margin-bottom: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border: 2px solid #ff9800;
+        background: #fff0e6;   
+    }
+
+    .loginf button {
+        margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      background: #ff9800;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .loginf button:hover {
+      background: #e68900;
+    }
+
+    .loginf input{
+        padding: 10px;
+        width: 250px;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<center>
+<div class="loginf">
+<h1>Login FORM</h2><br><br>
+
+<form id="loginform">
+    <input type="text" placeholder="Enter your name" id="name"><br><br>
+    <input type="password" placeholder="Enter your Password" id="password"><br><br>
+    <button type="submit">Login</button>
+</form>
+</center>
+</div>
+
+
+<script>
+
+    const API = "http://localhost:5000";
+    
+    const form = document.getElementById("loginform");
+    form.addEventListener("submit",login);
+
+    
+    async function login(event){
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const password = document.getElementById("password").value;
+
+        const res = await fetch(API + '/api/login',{
+            method: 'POST',
+            headers: { "Content-Type" : 'application/json'},
+            body: JSON.stringify({name,password})
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if(data.status){
+            alert('Login Successfull!!');
+            localStorage.setItem('token',true);
+            localStorage.setItem('name',data.msg);
+            window.location.href = '/template/index.html';
+        }
+        else window.alert('Login Failed');
+    }
+</script>

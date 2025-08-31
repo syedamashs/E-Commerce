@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; background: #f9f9f9; }
+        nav{
+            display: flex;
+            background: #333;
+            padding: 1rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a{
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+         nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #ff9800;
+        }  
+        .hero {
+            background: url('https://images.unsplash.com/photo-1503602642458-232111445657?w=1600') no-repeat center center/cover;
+            /*background: linear-gradient(to right, #ff9800, #ff5722);*/
+            color: white;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        /* Products Grid */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .product {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+    .product h3 {
+      margin: 10px 0;
+    }
+    .product button {
+      padding: 10px 15px;
+      margin: 10px;
+      border: none;
+      background: #ff9800;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .product button:hover {
+      background: #e68900;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #333;
+      color: white;
+      margin-top: 30px;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+
+    
+    </style>
+</head>
+<body>
+    <nav>
+    <div class="logo"><a href="index.html">🛒 Mini Store</a></div>
+    <div class="links" id="nav-links"></div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Welcome to Mini E-Commerce Store</h1>
+    <p>Browse, shop, and experience a simple store demo</p>
+  </section>
+
+   <!-- Products -->
+  <section class="products">
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600" alt="Product 1">
+      <h3>Product 1</h3>
+      <p>$10.00</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600" alt="Product 2">
+      <h3>Product 2</h3>
+      <p>$20.00</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600" alt="Product 3">
+      <h3>Product 3</h3>
+      <p>$15.00</p>
+      <button>Add to Cart</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Mini E-Commerce Store. All Rights Reserved.</p>
+  </footer>
+
+
+<script>
+  const navLinks = document.getElementById("nav-links");
+  const isLoggedIn = localStorage.getItem("token");
+
+  if (isLoggedIn === "true") {
+    navLinks.innerHTML = `
+       
+      <div style="display:flex; align-items:center; gap:10px;">
+         <a href="#">Hello, ${localStorage.getItem("name")}</a>
+        <div class="profile" title="My Profile"
+          style="width:40px;height:40px;border-radius:50%;background:url('https://cdn-icons-png.flaticon.com/512/149/149071.png') no-repeat center/cover;cursor:pointer;">
+        </div>
+        <a href="#" onclick="logout()" id="logoutLink" style="color:white;text-decoration:none;">Logout</a>
+        <a href="#" style="color:white;text-decoration:none;">Cart</a>
+      </div>
+    `;
+  } else {
+    navLinks.innerHTML = `
+      <a href="/template/register.html">Register</a>
+      <a href="/template/login.html">Login</a>
+      <a href="#">Cart</a>
+    `;
+  }
+
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("name");
+    alert("Logged out successfully!");  
+    location.reload(); // reload page to reset nav
+  }
+</script>
+
+</body>
+</html>
